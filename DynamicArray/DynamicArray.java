@@ -1,3 +1,5 @@
+package DynamicArray;
+
 public class DynamicArray{
     private int size;
     private int capacity;
