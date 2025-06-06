@@ -131,13 +131,6 @@ public class DynamicArray{
         return -1;
     }
 
-    void cloneArray(Object newArray[]){
-
-        for(int i = 0; i < size; i++){
-            newArray[i] = array[i];
-        }
-    }
-
     void reverse(){
 
         for(int i = 0; i < size / 2; i++){
