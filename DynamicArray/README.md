@@ -11,16 +11,16 @@ A dynamic array, also called as a resizeable array, is a data structure that is 
 # 🗃️ Project Overview
 In this repository, I made my own dynamic array using **Java** from scratch. The goal is to better understand how dynamic array works, especially in terms of memory handling, resizing, and better performance. 
 
-## Scope
-- insert()
-- remove()
-- get()
-- set()
-- capacity()
-- size()
-- resize()
-- clear()
-- contains()
-- indexOf()
-- reverse()
-- toString()
+## 🎯 Features
+- insert() - adds element to the array
+- remove() - remove element to the array
+- get() - retrieve an element by index
+- set() - update the element at a specific index
+- capacity() - view current capacity
+- size() - view current size
+- resize() - automatically resize the capacity 
+- clear() - remove all elements
+- contains() - check if specific value exists
+- indexOf() - get the index of specific value
+- reverse() - reverse the element of the array
+- toString() - converts the array to a readable string format
