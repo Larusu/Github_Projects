@@ -1,15 +1,15 @@
 ## 🤔 What is a Dynamic Array? 
-A dynamic array, also known as a resizeable array, is a data structure that is manipulable which you can expand and shrink its size. Unlike a static array that has a fixed size.
+A dynamic array, also called as a resizeable array, is a data structure that is manipulable which you can expand and shrink its size. Unlike a static array, which has a fixed length, a dynamic array can adjust its capacity at runtime.
 
-# Language
+# 🖥️ Language Equivalents
 - Java : ArrayList
 - C++ : std::Vectors
 - Python : list
 - JavaScript : Array
 - C# : List<T>
 
-# Overview
-In this repository, I used java to make my own dynamic array to understand the basics of dynamic array and to understand basic memory handler. 
+# 🗃️ Project Overview
+In this repository, I made my own dynamic array using **Java** from scratch. The goal is to better understand how dynamic array works, especially in terms of memory handling, resizing, and better performance. 
 
 ## Scope
 - insert()
