@@ -11,10 +11,11 @@ public class Main extends JFrame{
 
         Panel newPanel = new Panel();
         display.add(newPanel);
-
+        newPanel.startGameThread();
         display.pack();
-
+        
         display.setLocationRelativeTo(null); 
         display.setVisible(true);
+        
     }
 }
