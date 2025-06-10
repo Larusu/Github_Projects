@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.Random;
 import java.awt.event.MouseEvent;
 
 
@@ -82,6 +83,19 @@ public class Panel extends JPanel implements Runnable, MouseListener, MouseMotio
             }
         }
     }
+
+    Color randomColor(int RED, int GREEN, int BLUE){
+
+        Color randColor;
+        Random random = new Random();
+
+        RED++;
+        GREEN++;
+        BLUE++;
+        randColor = new Color(RED, GREEN, BLUE);
+
+        return randColor;
+    }
     
     public void drawGrid(Graphics g){
         
@@ -92,12 +106,12 @@ public class Panel extends JPanel implements Runnable, MouseListener, MouseMotio
                 int y = row * tileSize;
 
                 if (grid[row][col] == 1) {
-                    g.setColor(Color.YELLOW);
+                    g.setColor(Color.getHSBColor(255, 255, 250));
                     g.fillRect(x, y, tileSize, tileSize);
                     
                 }
-                g.setColor(Color.WHITE);
-                g.drawRect(x, y, tileSize, tileSize);
+                // g.setColor(Color.WHITE);
+                // g.drawRect(x, y, tileSize, tileSize);
             }
         }
     }
@@ -114,34 +128,37 @@ public class Panel extends JPanel implements Runnable, MouseListener, MouseMotio
     void fallingSandAnimation(){
 
         int[][] newGrid = new int[maxScreenRow][maxScreenCol];
+        Random r = new Random();   
 
         for(int i = 0; i < maxScreenRow; i++){
             for(int j = 0; j < maxScreenCol; j++){
                 newGrid[i][j] = grid[i][j];
             }
         }
-
         for(int i = maxScreenRow - 2; i >= 0; i--){
             for(int j = 0; j < maxScreenCol; j++){
                 int checkValue = newGrid[i][j];
+                int rand = r.nextInt(2) + 1;
                 if(checkValue == 1){
-                    int belowR = grid[i+1][j+1];
-                    int belowL = grid[i+1][j-1];
+                    int belowR = -1, belowL = -1;
+                    if(j < maxScreenCol - 1){
+                        belowR = grid[i+1][j+1];
+                    }
+                    if(j > 0){
+                        belowL = grid[i+1][j-1];
+                    }
+
                     if(i < maxScreenRow - 1){
                         if(newGrid[i + 1][j] == 0 ){
                             newGrid[i][j] = 0;
                             newGrid[i + 1][j] = 1;
-                        }else if(belowR == 0){
+                        }else if(j < maxScreenCol && rand == 1 && belowR == 0){
                             newGrid[i][j] = 0;
                             newGrid[i][j + 1] = 1;
-                        }else if(belowL == 0){
+                        }else if(j > 0 && rand == 2 && belowL == 0){
                             newGrid[i][j] = 0;
                             newGrid[i][j - 1] = 1;
                         }
-                    }
-
-                    if (grid[i][j] == 1 && newGrid[i][j] == 1) {
-                        newGrid[i][j] = 1;
                     }
                 }
             }
@@ -149,7 +166,7 @@ public class Panel extends JPanel implements Runnable, MouseListener, MouseMotio
         grid = newGrid;
     }
 
-
+    
     @Override
     public void mousePressed(MouseEvent e) { updateTile(e);}
     @Override
