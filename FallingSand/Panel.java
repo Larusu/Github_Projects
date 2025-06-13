@@ -111,18 +111,25 @@ public class Panel extends JPanel implements Runnable, MouseListener, MouseMotio
     }
 
     void updateTile(MouseEvent e) {
+        
         int col = e.getX() / tileSize;
         int row = e.getY() / tileSize;
 
         if (row >= 0 && row < maxScreenRow && col >= 0 && col < maxScreenCol) {
             grid[row][col] = 1;
-            grid[row+1][col+1] = 1;
-            grid[row][col+1] = 1;
-            grid[row][col-1] = 1;
-            hueGrid[row][col] = 1; 
-            hueGrid[row+1][col+1] = 1;
-            hueGrid[row][col+1] = 1;
-            hueGrid[row][col-1] = 1;
+            hueGrid[row][col] = 1;
+            if (col + 1 < maxScreenCol) { // right
+                grid[row][col + 1] = 1;
+                hueGrid[row][col + 1] = 1;
+            }
+            if (col - 1 >= 0) { // left
+                grid[row][col - 1] = 1;
+                hueGrid[row][col - 1] = 1;
+            }
+            if (row + 1 < maxScreenRow && col + 1 < maxScreenCol) { // bottom right
+                grid[row + 1][col + 1] = 1;
+                hueGrid[row + 1][col + 1] = 1;
+            }
             repaint();
         }
     }
