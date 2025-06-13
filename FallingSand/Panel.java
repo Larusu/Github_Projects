@@ -13,12 +13,12 @@ import javax.swing.JPanel;
 
 public class Panel extends JPanel implements Runnable, MouseListener, MouseMotionListener{
 
-    final int tileSize = 10; 
+    final int tileSize = 5; 
     //final int scale = 2;
     public final int finalTileSize = tileSize;
 
-    public final int maxScreenCol = 50; // 16 - 2, since there is no border
-    public final int maxScreenRow = 75;
+    public final int maxScreenCol = 100; // 16 - 2, since there is no border
+    public final int maxScreenRow = 150;
     public final int screenWidth = finalTileSize * maxScreenCol;
     public final int screenHeight = finalTileSize * maxScreenRow;
     int sandTick = 0;
@@ -116,7 +116,13 @@ public class Panel extends JPanel implements Runnable, MouseListener, MouseMotio
 
         if (row >= 0 && row < maxScreenRow && col >= 0 && col < maxScreenCol) {
             grid[row][col] = 1;
+            grid[row+1][col+1] = 1;
+            grid[row][col+1] = 1;
+            grid[row][col-1] = 1;
             hueGrid[row][col] = 1; 
+            hueGrid[row+1][col+1] = 1;
+            hueGrid[row][col+1] = 1;
+            hueGrid[row][col-1] = 1;
             repaint();
         }
     }
@@ -134,9 +140,9 @@ public class Panel extends JPanel implements Runnable, MouseListener, MouseMotio
         for(int i = maxScreenRow - 2; i >= 0; i--){
             for(int j = 0; j < maxScreenCol; j++){
                 if (grid[i][j] == 1) {
-                    hueGrid[i][j] += 0.002f; // small change per frame
+                    hueGrid[i][j] += 0.002f; 
                     if (hueGrid[i][j] > 1.0f) {
-                        hueGrid[i][j] -= 1.0f; // wrap around
+                        hueGrid[i][j] -= 1.0f; 
                     }
                 }
                 int checkValue = newGrid[i][j];
