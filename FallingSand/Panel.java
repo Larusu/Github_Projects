@@ -24,6 +24,7 @@ public class Panel extends JPanel implements Runnable, MouseListener, MouseMotio
     int sandTick = 0;
 
     int[][] grid;
+    Color[][] colorGrid = new Color[maxScreenRow][maxScreenCol];
 
     Thread gameThread;
     
@@ -84,17 +85,9 @@ public class Panel extends JPanel implements Runnable, MouseListener, MouseMotio
         }
     }
 
-    Color randomColor(int RED, int GREEN, int BLUE){
-
-        Color randColor;
-        Random random = new Random();
-
-        RED++;
-        GREEN++;
-        BLUE++;
-        randColor = new Color(RED, GREEN, BLUE);
-
-        return randColor;
+    Color generateRainbowColor() {
+        float hue = new Random().nextFloat();
+        return Color.getHSBColor(hue, 1.0f, 1.0f);
     }
     
     public void drawGrid(Graphics g){
@@ -106,7 +99,9 @@ public class Panel extends JPanel implements Runnable, MouseListener, MouseMotio
                 int y = row * tileSize;
 
                 if (grid[row][col] == 1) {
-                    g.setColor(Color.getHSBColor(255, 255, 250));
+                    Color c = colorGrid[row][col];
+                    if (c == null) c = Color.YELLOW;    
+                    g.setColor(c);
                     g.fillRect(x, y, tileSize, tileSize);
                     
                 }
@@ -122,6 +117,8 @@ public class Panel extends JPanel implements Runnable, MouseListener, MouseMotio
 
         if (row >= 0 && row < maxScreenRow && col >= 0 && col < maxScreenCol) {
             grid[row][col] = 1;
+            colorGrid[row][col] = generateRainbowColor();
+            repaint();
         }
     }
 
@@ -152,12 +149,18 @@ public class Panel extends JPanel implements Runnable, MouseListener, MouseMotio
                         if(newGrid[i + 1][j] == 0 ){
                             newGrid[i][j] = 0;
                             newGrid[i + 1][j] = 1;
+                            colorGrid[i+1][j] = colorGrid[i][j];
+                            colorGrid[i][j] = null;
                         }else if(j < maxScreenCol && rand == 1 && belowR == 0){
                             newGrid[i][j] = 0;
                             newGrid[i][j + 1] = 1;
+                            colorGrid[i+1][j+1] = colorGrid[i][j];
+                            colorGrid[i][j] = null;
                         }else if(j > 0 && rand == 2 && belowL == 0){
                             newGrid[i][j] = 0;
                             newGrid[i][j - 1] = 1;
+                            colorGrid[i+1][j-1] = colorGrid[i][j];
+                            colorGrid[i][j] = null;
                         }
                     }
                 }
