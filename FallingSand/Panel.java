@@ -24,7 +24,7 @@ public class Panel extends JPanel implements Runnable, MouseListener, MouseMotio
     int sandTick = 0;
 
     int[][] grid;
-    Color[][] colorGrid = new Color[maxScreenRow][maxScreenCol];
+    float[][] hueGrid = new float[maxScreenRow][maxScreenCol];
 
     Thread gameThread;
     
@@ -99,9 +99,8 @@ public class Panel extends JPanel implements Runnable, MouseListener, MouseMotio
                 int y = row * tileSize;
 
                 if (grid[row][col] == 1) {
-                    Color c = colorGrid[row][col];
-                    if (c == null) c = Color.YELLOW;    
-                    g.setColor(c);
+                    float hue = hueGrid[row][col];
+                    g.setColor(Color.getHSBColor(hue, 1.0f, 1.0f)); 
                     g.fillRect(x, y, tileSize, tileSize);
                     
                 }
@@ -117,7 +116,7 @@ public class Panel extends JPanel implements Runnable, MouseListener, MouseMotio
 
         if (row >= 0 && row < maxScreenRow && col >= 0 && col < maxScreenCol) {
             grid[row][col] = 1;
-            colorGrid[row][col] = generateRainbowColor();
+            hueGrid[row][col] = new Random().nextFloat(); 
             repaint();
         }
     }
@@ -134,6 +133,12 @@ public class Panel extends JPanel implements Runnable, MouseListener, MouseMotio
         }
         for(int i = maxScreenRow - 2; i >= 0; i--){
             for(int j = 0; j < maxScreenCol; j++){
+                if (grid[i][j] == 1) {
+                    hueGrid[i][j] += 0.002f; // small change per frame
+                    if (hueGrid[i][j] > 1.0f) {
+                        hueGrid[i][j] -= 1.0f; // wrap around
+                    }
+                }
                 int checkValue = newGrid[i][j];
                 int rand = r.nextInt(2) + 1;
                 if(checkValue == 1){
@@ -149,18 +154,18 @@ public class Panel extends JPanel implements Runnable, MouseListener, MouseMotio
                         if(newGrid[i + 1][j] == 0 ){
                             newGrid[i][j] = 0;
                             newGrid[i + 1][j] = 1;
-                            colorGrid[i+1][j] = colorGrid[i][j];
-                            colorGrid[i][j] = null;
+                            hueGrid[i+1][j] = hueGrid[i][j];
+                            hueGrid[i][j] = 0;
                         }else if(j < maxScreenCol && rand == 1 && belowR == 0){
                             newGrid[i][j] = 0;
                             newGrid[i][j + 1] = 1;
-                            colorGrid[i+1][j+1] = colorGrid[i][j];
-                            colorGrid[i][j] = null;
+                            hueGrid[i+1][j+1] = hueGrid[i][j];
+                            hueGrid[i][j] = 0;
                         }else if(j > 0 && rand == 2 && belowL == 0){
                             newGrid[i][j] = 0;
                             newGrid[i][j - 1] = 1;
-                            colorGrid[i+1][j-1] = colorGrid[i][j];
-                            colorGrid[i][j] = null;
+                            hueGrid[i+1][j-1] = hueGrid[i][j];
+                            hueGrid[i][j] = 0;
                         }
                     }
                 }
