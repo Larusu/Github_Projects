@@ -116,7 +116,7 @@ public class Panel extends JPanel implements Runnable, MouseListener, MouseMotio
 
         if (row >= 0 && row < maxScreenRow && col >= 0 && col < maxScreenCol) {
             grid[row][col] = 1;
-            hueGrid[row][col] = new Random().nextFloat(); 
+            hueGrid[row][col] = 1; 
             repaint();
         }
     }
