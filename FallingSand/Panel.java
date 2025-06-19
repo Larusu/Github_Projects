@@ -130,57 +130,75 @@ public class Panel extends JPanel implements Runnable, MouseListener, MouseMotio
                 grid[row + 1][col + 1] = 1;
                 hueGrid[row + 1][col + 1] = 1;
             }
+            if(row + 1 < maxScreenRow && col - 1 < maxScreenCol){
+                grid[row + 1][col - 1] = 1;
+                hueGrid[row + 1][col - 1] = 1;
+            }
             repaint();
         }
     }
 
-    void fallingSandAnimation(){
+    int[][] makeNewArray(){
 
-        int[][] newGrid = new int[maxScreenRow][maxScreenCol];
-        Random r = new Random();   
-
+        int[][] newArray= new int[maxScreenRow][maxScreenCol];
         for(int i = 0; i < maxScreenRow; i++){
             for(int j = 0; j < maxScreenCol; j++){
-                newGrid[i][j] = grid[i][j];
+                newArray[i][j] = grid[i][j];
             }
         }
+        return newArray;
+    }
+
+    void changingHueValue(int i, int j){
+
+        hueGrid[i][j] += 0.002f; 
+        if (hueGrid[i][j] > 1.0f) {
+            hueGrid[i][j] -= 1.0f; 
+        }
+    }
+    void checkingSandBelow(int i, int j, int[][] newGrid, int random){
+        
+        int belowR = -1, belowL = -1;
+        if(j < maxScreenCol - 1){
+            belowR = grid[i+1][j+1];
+        }
+        if(j > 0){
+            belowL = grid[i+1][j-1];
+        }
+        if(i < maxScreenRow - 1){
+            if(newGrid[i + 1][j] == 0 ){
+                newGrid[i][j] = 0;
+                newGrid[i + 1][j] = 1;
+                hueGrid[i+1][j] = hueGrid[i][j];
+                hueGrid[i][j] = 0;
+            }else if(j < maxScreenCol && random == 1 && belowR == 0){ // to fall on right side
+                newGrid[i][j] = 0;
+                newGrid[i][j + 1] = 1;
+                hueGrid[i+1][j+1] = hueGrid[i][j];
+                hueGrid[i][j] = 0;
+            }else if(j > 0 && random == 2 && belowL == 0){ // to fall on left side
+                newGrid[i][j] = 0;
+                newGrid[i][j - 1] = 1;
+                hueGrid[i+1][j-1] = hueGrid[i][j];
+                hueGrid[i][j] = 0;
+            }
+        }
+    }
+    void fallingSandAnimation(){
+
+        int[][] newGrid = makeNewArray();
+        Random r = new Random();   
+
         for(int i = maxScreenRow - 2; i >= 0; i--){
             for(int j = 0; j < maxScreenCol; j++){
-                if (grid[i][j] == 1) {
-                    hueGrid[i][j] += 0.002f; 
-                    if (hueGrid[i][j] > 1.0f) {
-                        hueGrid[i][j] -= 1.0f; 
-                    }
-                }
-                int checkValue = newGrid[i][j];
-                int rand = r.nextInt(2) + 1;
-                if(checkValue == 1){
-                    int belowR = -1, belowL = -1;
-                    if(j < maxScreenCol - 1){
-                        belowR = grid[i+1][j+1];
-                    }
-                    if(j > 0){
-                        belowL = grid[i+1][j-1];
-                    }
 
-                    if(i < maxScreenRow - 1){
-                        if(newGrid[i + 1][j] == 0 ){
-                            newGrid[i][j] = 0;
-                            newGrid[i + 1][j] = 1;
-                            hueGrid[i+1][j] = hueGrid[i][j];
-                            hueGrid[i][j] = 0;
-                        }else if(j < maxScreenCol && rand == 1 && belowR == 0){
-                            newGrid[i][j] = 0;
-                            newGrid[i][j + 1] = 1;
-                            hueGrid[i+1][j+1] = hueGrid[i][j];
-                            hueGrid[i][j] = 0;
-                        }else if(j > 0 && rand == 2 && belowL == 0){
-                            newGrid[i][j] = 0;
-                            newGrid[i][j - 1] = 1;
-                            hueGrid[i+1][j-1] = hueGrid[i][j];
-                            hueGrid[i][j] = 0;
-                        }
-                    }
+                int rand = r.nextInt(2) + 1;
+
+                if (grid[i][j] == 1) {
+                    changingHueValue(i, j);
+                }
+                if(grid[i][j] == 1){
+                    checkingSandBelow(i, j, newGrid, rand);
                 }
             }
         }
