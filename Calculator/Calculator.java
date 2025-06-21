@@ -1,6 +1,7 @@
 package Calculator;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -24,22 +25,28 @@ public class Calculator extends JPanel{
         
         for(int i = 0; i < btnNum.length; i++){
             btnNum[i] = new JButton(Integer.toString(i));
+            btnNum[i].setBackground(Color.LIGHT_GRAY);
+            btnNum[i].setForeground(Color.BLACK);
+
         }
         
-        display(this);
+        this.add(displayBtn(), BorderLayout.CENTER);
+        // // display(this);
     }
 
     void display(JPanel panel){
 
         JPanel button = displayBtn();
         button.setPreferredSize(new Dimension(50, 20));
+        button.setForeground(Color.YELLOW);
+
         panel.add(button);
     }
 
     JPanel displayBtn(){
 
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(4, 3, 5, 5));
+        panel.setLayout(new GridLayout(4, 3, 10, 10));
         for(int i = 9; i >= 0; i--){
             panel.add(btnNum[i]);
         }
